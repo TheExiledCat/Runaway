@@ -7,16 +7,17 @@ public class Player_movement : MonoBehaviour
     public Transform floorcheck; //hitbox for ground check
     float checkRadi =0.1f; // size of hitbox groundcheck
     float strafeSpeed =25; // left and right speed
-    public float walkSpeed =50; //moving speed
+    public float walkSpeed ; //moving speed
     public float jumpHeight = 7; //jump height
     bool isGrounded; // boolean that keeps track if we are touching something qualified as "ground" or not
     float runSpeed;
     float moveInX; // vvv //take in all inputs
     float moveInZ;
     float lookX;
-    float lookS = 20;
+    float lookS = 30;
     float lookY;
-    float rotY;
+    
+    Quaternion rotY;
 
     public Camera cam;
     void Start()
@@ -38,11 +39,12 @@ public class Player_movement : MonoBehaviour
             rb.velocity = new Vector3(rb.velocity.x, jumpHeight , rb.velocity.z);//jumping
         }
 
-        
-         rotY += lookY * lookS * Time.deltaTime;
 
-        rotY = Mathf.Clamp(rotY, -80, 80f);
-        //cam.transform.rotation = new Quaternion(-rotY,0 , 0f,cam.transform.rotation.w);
+
+        rotY = cam.transform.rotation;
+        cam.transform.Rotate(lookS * -lookY * Time.deltaTime, 0, 0);
+        rotY.x = Mathf.Clamp(rotY.x, -80, 80f);
+        //cam.transform.rotation = new Quaternion(-rotY.x,0 , 0,cam.transform.rotation.w);
         transform.Rotate(0, lookX*lookS*Time.deltaTime, 0);
 
 
